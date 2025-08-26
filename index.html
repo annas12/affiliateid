@@ -2,7 +2,7 @@
   <div style="margin:auto; width:60px; height:60px; border:6px solid #ccc; border-top:6px solid #00aaff; border-radius:50%; animation:spin 1s linear infinite;"></div>
   
   <h2 style="margin-top:30px; font-weight:normal;">Checking your connection...</h2>
-  <p style="color:#555;">You will be redirected shortly</p>
+  <p style="color:#555;">You will be redirected in <span id="countdown">5</span> seconds</p>
 </div>
 
 <style>
@@ -20,9 +20,16 @@
   ];
 
   var index = Math.floor(Math.random() * links.length);
+  var seconds = 5; // waktu countdown dalam detik
+  var countdownEl = document.getElementById("countdown");
 
-  setTimeout(function() {
-    window.location.href = links[index];
+  var timer = setInterval(function() {
+    seconds--;
+    countdownEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      window.location.href = links[index];
+    }
   }, 1000);
 })();
 </script>
