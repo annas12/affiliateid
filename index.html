@@ -1,35 +1,336 @@
-<div style="text-align:center; padding:80px 20px; font-family:sans-serif;">
-  <div style="margin:auto; width:60px; height:60px; border:6px solid #ccc; border-top:6px solid #00aaff; border-radius:50%; animation:spin 1s linear infinite;"></div>
-  
-  <h2 style="margin-top:30px; font-weight:normal;">Checking your connection...</h2>
-  <p style="color:#555;">You will be redirected in <span id="countdown">5</span> seconds</p>
-</div>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaStream - Nonton Film Hollywood Terbaru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e40af 100%);
+        }
+        
+        .movie-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1f2937, #374151);
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .genre-tag {
+            background: rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .rating-star {
+            color: #fbbf24;
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(17, 24, 39, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-2xl font-bold text-blue-400">🎬 CinemaStream</h1>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="#" class="hover:text-blue-400 transition-colors">Beranda</a>
+                        <a href="#" class="hover:text-blue-400 transition-colors">Film</a>
+                        <a href="#" class="hover:text-blue-400 transition-colors">Serial TV</a>
+                        <a href="#" class="hover:text-blue-400 transition-colors">Genre</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Cari film..." class="bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 w-64 focus:outline-none focus:border-blue-400">
+                        <span class="absolute right-3 top-2.5 text-gray-400">🔍</span>
+                    </div>
+                    <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">Masuk</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<style>
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center py-20">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    Streaming Film Hollywood
+                    <span class="text-blue-400">Terbaru</span>
+                </h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Nikmati ribuan film Hollywood berkualitas tinggi dengan subtitle Indonesia. Streaming tanpa batas, kapan saja dan dimana saja.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        🎬 Mulai Nonton Gratis
+                    </button>
+                    <button class="border border-gray-400 hover:border-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        📱 Download App
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script type='text/javascript'>
-(function() {
-  var links = [
-    "https://ositisaouknatstu.org?Tq4VF=1210694",
-    "https://ositisaouknatstu.org?0RHvX=1210693"
-  ];
+    <!-- Featured Movies -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold mb-8">🔥 Film Trending</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Movie Card 1 -->
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Avengers: Endgame')">
+                    <div class="bg-gradient-to-br from-red-600 to-purple-700 h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
+                        🦸‍♂️
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Avengers: Endgame</h4>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="genre-tag px-2 py-1 rounded text-sm">Action</span>
+                        <div class="flex items-center">
+                            <span class="rating-star">⭐</span>
+                            <span class="ml-1 text-sm">8.4</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">2019 • 181 menit</p>
+                </div>
 
-  var index = Math.floor(Math.random() * links.length);
-  var seconds = 6; // waktu countdown dalam detik
-  var countdownEl = document.getElementById("countdown");
+                <!-- Movie Card 2 -->
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Top Gun: Maverick')">
+                    <div class="bg-gradient-to-br from-blue-600 to-gray-700 h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
+                        ✈️
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Top Gun: Maverick</h4>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="genre-tag px-2 py-1 rounded text-sm">Action</span>
+                        <div class="flex items-center">
+                            <span class="rating-star">⭐</span>
+                            <span class="ml-1 text-sm">8.7</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">2022 • 130 menit</p>
+                </div>
 
-  var timer = setInterval(function() {
-    seconds--;
-    countdownEl.textContent = seconds;
-    if (seconds <= 0) {
-      clearInterval(timer);
-      window.location.href = links[index];
-    }
-  }, 1000);
-})();
-</script>
+                <!-- Movie Card 3 -->
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('The Batman')">
+                    <div class="bg-gradient-to-br from-gray-800 to-black h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
+                        🦇
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">The Batman</h4>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="genre-tag px-2 py-1 rounded text-sm">Crime</span>
+                        <div class="flex items-center">
+                            <span class="rating-star">⭐</span>
+                            <span class="ml-1 text-sm">7.8</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">2022 • 176 menit</p>
+                </div>
+
+                <!-- Movie Card 4 -->
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Spider-Man: No Way Home')">
+                    <div class="bg-gradient-to-br from-red-600 to-blue-600 h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
+                        🕷️
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Spider-Man: No Way Home</h4>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="genre-tag px-2 py-1 rounded text-sm">Action</span>
+                        <div class="flex items-center">
+                            <span class="rating-star">⭐</span>
+                            <span class="ml-1 text-sm">8.2</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">2021 • 148 menit</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movie Categories -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold mb-8">🎭 Kategori Film</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <button class="bg-gradient-to-r from-red-600 to-red-700 p-4 rounded-lg hover:from-red-700 hover:to-red-800 transition-all" onclick="filterByGenre('Action')">
+                    <div class="text-2xl mb-2">💥</div>
+                    <div class="font-semibold">Action</div>
+                </button>
+                <button class="bg-gradient-to-r from-purple-600 to-purple-700 p-4 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all" onclick="filterByGenre('Sci-Fi')">
+                    <div class="text-2xl mb-2">🚀</div>
+                    <div class="font-semibold">Sci-Fi</div>
+                </button>
+                <button class="bg-gradient-to-r from-pink-600 to-pink-700 p-4 rounded-lg hover:from-pink-700 hover:to-pink-800 transition-all" onclick="filterByGenre('Romance')">
+                    <div class="text-2xl mb-2">💕</div>
+                    <div class="font-semibold">Romance</div>
+                </button>
+                <button class="bg-gradient-to-r from-yellow-600 to-yellow-700 p-4 rounded-lg hover:from-yellow-700 hover:to-yellow-800 transition-all" onclick="filterByGenre('Comedy')">
+                    <div class="text-2xl mb-2">😂</div>
+                    <div class="font-semibold">Comedy</div>
+                </button>
+                <button class="bg-gradient-to-r from-gray-600 to-gray-700 p-4 rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all" onclick="filterByGenre('Horror')">
+                    <div class="text-2xl mb-2">👻</div>
+                    <div class="font-semibold">Horror</div>
+                </button>
+                <button class="bg-gradient-to-r from-blue-600 to-blue-700 p-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all" onclick="filterByGenre('Drama')">
+                    <div class="text-2xl mb-2">🎭</div>
+                    <div class="font-semibold">Drama</div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Movies -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold mb-8">🆕 Film Terbaru</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- Additional Movie Cards -->
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Dune')">
+                    <div class="bg-gradient-to-br from-orange-600 to-yellow-700 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
+                        🏜️
+                    </div>
+                    <h4 class="font-semibold mb-1">Dune</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs genre-tag px-2 py-1 rounded">Sci-Fi</span>
+                        <span class="text-sm">⭐ 8.0</span>
+                    </div>
+                </div>
+
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Fast X')">
+                    <div class="bg-gradient-to-br from-red-600 to-black h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
+                        🏎️
+                    </div>
+                    <h4 class="font-semibold mb-1">Fast X</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs genre-tag px-2 py-1 rounded">Action</span>
+                        <span class="text-sm">⭐ 7.2</span>
+                    </div>
+                </div>
+
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Oppenheimer')">
+                    <div class="bg-gradient-to-br from-gray-700 to-orange-600 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
+                        ⚛️
+                    </div>
+                    <h4 class="font-semibold mb-1">Oppenheimer</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs genre-tag px-2 py-1 rounded">Drama</span>
+                        <span class="text-sm">⭐ 8.6</span>
+                    </div>
+                </div>
+
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('John Wick 4')">
+                    <div class="bg-gradient-to-br from-black to-red-800 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
+                        🔫
+                    </div>
+                    <h4 class="font-semibold mb-1">John Wick 4</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs genre-tag px-2 py-1 rounded">Action</span>
+                        <span class="text-sm">⭐ 7.9</span>
+                    </div>
+                </div>
+
+                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Guardians of the Galaxy 3')">
+                    <div class="bg-gradient-to-br from-purple-600 to-green-600 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
+                        🚀
+                    </div>
+                    <h4 class="font-semibold mb-1">Guardians 3</h4>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs genre-tag px-2 py-1 rounded">Action</span>
+                        <span class="text-sm">⭐ 8.1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-700 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold text-blue-400 mb-4">🎬 CinemaStream</h4>
+                    <p class="text-gray-400">Platform streaming film Hollywood terbaik dengan kualitas HD dan subtitle Indonesia.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Kategori</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Film Action</a></li>
+                        <li><a href="#" class="hover:text-white">Film Drama</a></li>
+                        <li><a href="#" class="hover:text-white">Film Comedy</a></li>
+                        <li><a href="#" class="hover:text-white">Film Horror</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Bantuan</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white">Kontak</a></li>
+                        <li><a href="#" class="hover:text-white">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-white">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+                    <div class="flex space-x-4">
+                        <button class="bg-blue-600 hover:bg-blue-700 p-2 rounded">📘</button>
+                        <button class="bg-pink-600 hover:bg-pink-700 p-2 rounded">📷</button>
+                        <button class="bg-blue-400 hover:bg-blue-500 p-2 rounded">🐦</button>
+                        <button class="bg-red-600 hover:bg-red-700 p-2 rounded">📺</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 CinemaStream. Semua hak dilindungi undang-undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function playMovie(movieTitle) {
+            alert(`🎬 Memulai streaming "${movieTitle}"...\n\nFitur ini adalah demo. Dalam versi lengkap, film akan diputar di pemutar video.`);
+        }
+
+        function filterByGenre(genre) {
+            alert(`🎭 Menampilkan film kategori "${genre}"...\n\nFitur ini adalah demo. Dalam versi lengkap, halaman akan menampilkan daftar film sesuai genre yang dipilih.`);
+        }
+
+        // Search functionality
+        document.querySelector('input[type="text"]').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value;
+                if (searchTerm.trim()) {
+                    alert(`🔍 Mencari film: "${searchTerm}"...\n\nFitur ini adalah demo. Dalam versi lengkap, akan menampilkan hasil pencarian film.`);
+                }
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97aa988c401ffd96',t:'MTc1NzEyNjM2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
