@@ -1,426 +1,368 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
- 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CinemaStream - Nonton Film Hollywood Terbaru</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Series Streaming Player</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
         body {
-            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
         }
         
-        .hero-gradient {
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e40af 100%);
-        }
-        
-        .movie-card {
+        .episode-btn {
             transition: all 0.3s ease;
-            background: linear-gradient(145deg, #1f2937, #374151);
         }
         
-        .movie-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        .episode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
-        .genre-tag {
-            background: rgba(59, 130, 246, 0.2);
+        .episode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-        }
-        
-        .rating-star {
-            color: #fbbf24;
-        }
-        
-        .nav-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
     </style>
-</head>
-<body class="bg-gray-900 text-white">
-    <!-- Navigation -->
-
-<div class="HEkQDE392262"></div>
-<script>
-    window.k_init = window.k_init || [];
-    k_init.push({
-        id: 'HEkQDE392262',
-        type: 'bn',
-        domain: 'hdbkome.com',
-        refresh: false,
-        next: 0
-    });
-    
-    var s = document.createElement('script');
-    s.setAttribute('async', true);
-    s.setAttribute('charset', 'utf-8');
-    s.setAttribute('data-cfasync', false);
-    s.src = 'https://hdbkome.com/kgr52225.js'; 
-    document.head && document.head.appendChild(s);
-</script>
-        
-<div class="znEsRk392262"></div>
-<script>
-    window.k_init = window.k_init || [];
-    k_init.push({
-        id: 'znEsRk392262',
-        type: 'bn',
-        domain: 'hdbkome.com',
-        refresh: false,
-        next: 0
-    });
-    
-    var s = document.createElement('script');
-    s.setAttribute('async', true);
-    s.setAttribute('charset', 'utf-8');
-    s.setAttribute('data-cfasync', false);
-    s.src = 'https://hdbkome.com/yzs0e4na.js'; 
-    document.head && document.head.appendChild(s);
-</script>
-        
-    
-    <nav class="fixed top-0 w-full z-50 nav-blur border-b border-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-8">
-                    <h1 class="text-2xl font-bold text-blue-400">🎬 CinemaStream</h1>
-                    <div class="hidden md:flex space-x-6">
-                        <a href="#" class="hover:text-blue-400 transition-colors">Beranda</a>
-                        <a href="#" class="hover:text-blue-400 transition-colors">Film</a>
-                        <a href="#" class="hover:text-blue-400 transition-colors">Serial TV</a>
-                        <a href="#" class="hover:text-blue-400 transition-colors">Genre</a>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Cari film..." class="bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 w-64 focus:outline-none focus:border-blue-400">
-                        <span class="absolute right-3 top-2.5 text-gray-400">🔍</span>
-                    </div>
-                    <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">Masuk</button>
-                </div>
-            </div>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full gradient-bg">
+  <div class="min-h-full p-4">
+   <div class="max-w-6xl mx-auto"><!-- Header -->
+    <div class="text-center mb-8">
+     <h1 id="series-title" class="text-4xl font-bold text-white mb-4">My Favorite Series</h1>
+     <p id="series-description" class="text-lg text-white/80 max-w-2xl mx-auto">Nikmati series favorit Anda dengan kualitas terbaik. Pilih episode yang ingin ditonton dari daftar di bawah.</p>
+    </div><!-- Main Content -->
+    <div class="grid lg:grid-cols-4 gap-6"><!-- Video Player -->
+     <div class="lg:col-span-3">
+      <div class="glass-effect rounded-2xl p-6 mb-6">
+       <div class="flex items-center justify-between mb-4">
+        <h2 id="current-episode-title" class="text-2xl font-bold text-white">Episode 1</h2>
+        <div class="flex items-center space-x-2"><span class="text-white/60 text-sm">Episode</span> <span id="current-episode-number" class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold">1</span>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-gradient pt-20 pb-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center py-20">
-                <h2 class="text-5xl md:text-6xl font-bold mb-6">
-                    Streaming Film Hollywood
-                    <span class="text-blue-400">Terbaru</span>
-                </h2>
-                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                    Nikmati ribuan film Hollywood berkualitas tinggi dengan subtitle Indonesia. Streaming tanpa batas, kapan saja dan dimana saja.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                        🎬 Mulai Nonton Gratis
-                    </button>
-                    <button class="border border-gray-400 hover:border-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                        📱 Download App
-                    </button>
-                </div>
-            </div>
+       </div>
+       <div id="video-container" class="video-container">
+        <div class="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-12">
+         <div class="text-center text-white">
+          <div class="text-6xl mb-4">
+           🎬
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Siap untuk Menonton</h3>
+          <p class="text-white/70">Tempelkan link Dailymotion Anda untuk episode ini</p>
+          <div class="mt-4 p-4 bg-white/10 rounded-lg">
+           <p class="text-sm text-white/80">Format link yang didukung:</p>
+           <p class="text-xs text-white/60 mt-1">https://www.dailymotion.com/video/xxxxxx</p>
+          </div>
+         </div>
         </div>
-    </section>
+       </div>
+      </div><!-- Episode Info -->
+      <div class="glass-effect rounded-xl p-4">
+       <h3 class="text-lg font-semibold text-white mb-2">Tentang Episode Ini</h3>
+       <p id="episode-description" class="text-white/70 text-sm">Episode pertama dari series yang menarik ini. Klik episode lain untuk melanjutkan menonton.</p>
+      </div>
+     </div><!-- Episode List -->
+     <div class="lg:col-span-1">
+      <div class="glass-effect rounded-2xl p-6">
+       <h3 class="text-xl font-bold text-white mb-6 text-center">Daftar Episode</h3>
+       <div id="episode-list" class="space-y-3"><!-- Episodes will be generated here -->
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        // Default configuration
+        const defaultConfig = {
+            series_title: "My Favorite Series",
+            series_description: "Nikmati series favorit Anda dengan kualitas terbaik. Pilih episode yang ingin ditonton dari daftar di bawah.",
+            episode_title_prefix: "Episode"
+        };
 
-    <!-- Featured Movies -->
-    <section class="py-16 bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl font-bold mb-8">🔥 Film Trending</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Movie Card 1 -->
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Avengers: Endgame')">
-                    <div class="bg-gradient-to-br from-red-600 to-purple-700 h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
-                        🦸‍♂️
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">Avengers: Endgame</h4>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="genre-tag px-2 py-1 rounded text-sm">Action</span>
-                        <div class="flex items-center">
-                            <span class="rating-star">⭐</span>
-                            <span class="ml-1 text-sm">8.4</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-sm">2019 • 181 menit</p>
-                </div>
-<?php
-include_once 'KSTLoader.php';
-echo KSTLoader::load('yvwkgz392263', 'bc6c389dedc3dafa8f9b91daeb830c310973ebf3ab0398d1159e036ea3b5ccf8');
-?>
-                <!-- Movie Card 2 -->
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Top Gun: Maverick')">
-                    <div class="bg-gradient-to-br from-blue-600 to-gray-700 h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
-                        ✈️
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">Top Gun: Maverick</h4>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="genre-tag px-2 py-1 rounded text-sm">Action</span>
-                        <div class="flex items-center">
-                            <span class="rating-star">⭐</span>
-                            <span class="ml-1 text-sm">8.7</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-sm">2022 • 130 menit</p>
-                </div>
-
-                <!-- Movie Card 3 -->
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('The Batman')">
-                    <div class="bg-gradient-to-br from-gray-800 to-black h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
-                        🦇
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">The Batman</h4>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="genre-tag px-2 py-1 rounded text-sm">Crime</span>
-                        <div class="flex items-center">
-                            <span class="rating-star">⭐</span>
-                            <span class="ml-1 text-sm">7.8</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-sm">2022 • 176 menit</p>
-                </div>
-
-                <!-- Movie Card 4 -->
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Spider-Man: No Way Home')">
-                    <div class="bg-gradient-to-br from-red-600 to-blue-600 h-64 rounded-lg mb-4 flex items-center justify-center text-6xl">
-                        🕷️
-                    </div>
-                    <h4 class="text-lg font-semibold mb-2">Spider-Man: No Way Home</h4>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="genre-tag px-2 py-1 rounded text-sm">Action</span>
-                        <div class="flex items-center">
-                            <span class="rating-star">⭐</span>
-                            <span class="ml-1 text-sm">8.2</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-sm">2021 • 148 menit</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Movie Categories -->
-    <section class="py-16 bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl font-bold mb-8">🎭 Kategori Film</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <button class="bg-gradient-to-r from-red-600 to-red-700 p-4 rounded-lg hover:from-red-700 hover:to-red-800 transition-all" onclick="filterByGenre('Action')">
-                    <div class="text-2xl mb-2">💥</div>
-                    <div class="font-semibold">Action</div>
-                </button>
-                <button class="bg-gradient-to-r from-purple-600 to-purple-700 p-4 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all" onclick="filterByGenre('Sci-Fi')">
-                    <div class="text-2xl mb-2">🚀</div>
-                    <div class="font-semibold">Sci-Fi</div>
-                </button>
-                <button class="bg-gradient-to-r from-pink-600 to-pink-700 p-4 rounded-lg hover:from-pink-700 hover:to-pink-800 transition-all" onclick="filterByGenre('Romance')">
-                    <div class="text-2xl mb-2">💕</div>
-                    <div class="font-semibold">Romance</div>
-                </button>
-                <button class="bg-gradient-to-r from-yellow-600 to-yellow-700 p-4 rounded-lg hover:from-yellow-700 hover:to-yellow-800 transition-all" onclick="filterByGenre('Comedy')">
-                    <div class="text-2xl mb-2">😂</div>
-                    <div class="font-semibold">Comedy</div>
-                </button>
-                <button class="bg-gradient-to-r from-gray-600 to-gray-700 p-4 rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all" onclick="filterByGenre('Horror')">
-                    <div class="text-2xl mb-2">👻</div>
-                    <div class="font-semibold">Horror</div>
-                </button>
-                <button class="bg-gradient-to-r from-blue-600 to-blue-700 p-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all" onclick="filterByGenre('Drama')">
-                    <div class="text-2xl mb-2">🎭</div>
-                    <div class="font-semibold">Drama</div>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- More Movies -->
-    <section class="py-16 bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl font-bold mb-8">🆕 Film Terbaru</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                <!-- Additional Movie Cards -->
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Dune')">
-                    <div class="bg-gradient-to-br from-orange-600 to-yellow-700 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
-                        🏜️
-                    </div>
-                    <h4 class="font-semibold mb-1">Dune</h4>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs genre-tag px-2 py-1 rounded">Sci-Fi</span>
-                        <span class="text-sm">⭐ 8.0</span>
-                    </div>
-                </div>
-
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Fast X')">
-                    <div class="bg-gradient-to-br from-red-600 to-black h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
-                        🏎️
-                    </div>
-                    <h4 class="font-semibold mb-1">Fast X</h4>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs genre-tag px-2 py-1 rounded">Action</span>
-                        <span class="text-sm">⭐ 7.2</span>
-                    </div>
-                </div>
-
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Oppenheimer')">
-                    <div class="bg-gradient-to-br from-gray-700 to-orange-600 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
-                        ⚛️
-                    </div>
-                    <h4 class="font-semibold mb-1">Oppenheimer</h4>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs genre-tag px-2 py-1 rounded">Drama</span>
-                        <span class="text-sm">⭐ 8.6</span>
-                    </div>
-                </div>
-
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('John Wick 4')">
-                    <div class="bg-gradient-to-br from-black to-red-800 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
-                        🔫
-                    </div>
-                    <h4 class="font-semibold mb-1">John Wick 4</h4>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs genre-tag px-2 py-1 rounded">Action</span>
-                        <span class="text-sm">⭐ 7.9</span>
-                    </div>
-                </div>
-
-                <div class="movie-card rounded-xl p-4 cursor-pointer" onclick="playMovie('Guardians of the Galaxy 3')">
-                    <div class="bg-gradient-to-br from-purple-600 to-green-600 h-48 rounded-lg mb-3 flex items-center justify-center text-4xl">
-                        🚀
-                    </div>
-                    <h4 class="font-semibold mb-1">Guardians 3</h4>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs genre-tag px-2 py-1 rounded">Action</span>
-                        <span class="text-sm">⭐ 8.1</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 border-t border-gray-700 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h4 class="text-xl font-bold text-blue-400 mb-4">🎬 CinemaStream</h4>
-                    <p class="text-gray-400">Platform streaming film Hollywood terbaik dengan kualitas HD dan subtitle Indonesia.</p>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Kategori</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Film Action</a></li>
-                        <li><a href="#" class="hover:text-white">Film Drama</a></li>
-                        <li><a href="#" class="hover:text-white">Film Comedy</a></li>
-                        <li><a href="#" class="hover:text-white">Film Horror</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Bantuan</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="hover:text-white">Kontak</a></li>
-                        <li><a href="#" class="hover:text-white">Syarat & Ketentuan</a></li>
-                        <li><a href="#" class="hover:text-white">Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Ikuti Kami</h5>
-                    <div class="flex space-x-4">
-                        <button class="bg-blue-600 hover:bg-blue-700 p-2 rounded">📘</button>
-                        <button class="bg-pink-600 hover:bg-pink-700 p-2 rounded">📷</button>
-                        <button class="bg-blue-400 hover:bg-blue-500 p-2 rounded">🐦</button>
-                        <button class="bg-red-600 hover:bg-red-700 p-2 rounded">📺</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 CinemaStream. Semua hak dilindungi undang-undang.</p>
-            </div>
-        </div>
-    </footer>
-
-<div class="RDEkZt392262"></div>
-<script>
-    window.k_init = window.k_init || [];
-    k_init.push({
-        id: 'RDEkZt392262',
-        type: 'bn',
-        domain: 'hdbkome.com',
-        refresh: false,
-        next: 0
-    });
-    
-    var s = document.createElement('script');
-    s.setAttribute('async', true);
-    s.setAttribute('charset', 'utf-8');
-    s.setAttribute('data-cfasync', false);
-    s.src = 'https://hdbkome.com/9rbehr19.js'; 
-    document.head && document.head.appendChild(s);
-</script>
-        
-    <script>
-        function playMovie(movieTitle) {
-            alert(`🎬 Memulai streaming "${movieTitle}"...\n\nFitur ini adalah demo. Dalam versi lengkap, film akan diputar di pemutar video.`);
-        }
-
-        function filterByGenre(genre) {
-            alert(`🎭 Menampilkan film kategori "${genre}"...\n\nFitur ini adalah demo. Dalam versi lengkap, halaman akan menampilkan daftar film sesuai genre yang dipilih.`);
-        }
-
-        // Search functionality
-        document.querySelector('input[type="text"]').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const searchTerm = this.value;
-                if (searchTerm.trim()) {
-                    alert(`🔍 Mencari film: "${searchTerm}"...\n\nFitur ini adalah demo. Dalam versi lengkap, akan menampilkan hasil pencarian film.`);
-                }
+        // Episode data - you can replace these URLs with your Dailymotion links
+        const episodes = [
+            {
+                number: 1,
+                title: "Pilot Episode",
+                description: "Episode pertama dari series yang menarik ini. Perkenalan karakter utama dan setting cerita.",
+                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4o6",
+                embedCode: `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://geo.dailymotion.com/player.html?video=x9aq4o6"style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none;"allowfullscreentitle="Dailymotion Video Player"allow="web-share"></iframe></div>`
+            },
+            {
+                number: 2,
+                title: "The Beginning",
+                description: "Petualangan dimulai dengan konflik pertama yang mengubah segalanya.",
+                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4oa",
+                embedCode: `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://geo.dailymotion.com/player.html?video=x9aq4oa"style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none;"allowfullscreentitle="Dailymotion Video Player"allow="web-share"></iframe></div>`
+            },
+            {
+                number: 3,
+                title: "Rising Action",
+                description: "Ketegangan meningkat dan karakter menghadapi tantangan baru.",
+                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4o0"
+            },
+            {
+                number: 4,
+                title: "Plot Twist",
+                description: "Kejutan besar yang mengubah arah cerita secara dramatis.",
+                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4nu"
+            },
+            {
+                number: 5,
+                title: "Complications",
+                description: "Masalah bertambah kompleks dan hubungan antar karakter diuji.",
+                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4nw"
+            },
+            {
+                number: 6,
+                title: "Mid Season",
+                description: "Titik tengah season dengan revelasi penting tentang masa lalu.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
+            },
+            {
+                number: 7,
+                title: "Revelations",
+                description: "Rahasia besar terbongkar dan mengubah dinamika cerita.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
+            },
+            {
+                number: 8,
+                title: "Confrontation",
+                description: "Konfrontasi besar antara karakter utama dan antagonis.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
+            },
+            {
+                number: 9,
+                title: "The Climax",
+                description: "Puncak ketegangan dengan aksi dan drama yang intens.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
+            },
+            {
+                number: 10,
+                title: "Resolution",
+                description: "Mulai ada penyelesaian konflik utama dalam cerita.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
+            },
+            {
+                number: 11,
+                title: "Preparation",
+                description: "Persiapan untuk episode final dengan setup yang menegangkan.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
+            },
+            {
+                number: 12,
+                title: "Season Finale",
+                description: "Episode penutup season dengan ending yang memuaskan dan mengejutkan.",
+                dailymotionUrl: "" // Paste your Dailymotion link here
             }
-        });
+        ];
 
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+        let currentEpisode = 1;
+
+        // Function to extract Dailymotion video ID from URL
+        function extractDailymotionId(url) {
+            if (!url) return null;
+            const match = url.match(/dailymotion\.com\/video\/([a-zA-Z0-9]+)/);
+            return match ? match[1] : null;
+        }
+
+        // Function to create Dailymotion embed URL
+        function createEmbedUrl(videoId) {
+            return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=0`;
+        }
+
+        // Function to render episode list
+        function renderEpisodeList() {
+            const episodeList = document.getElementById('episode-list');
+            const config = window.elementSdk?.config || defaultConfig;
+            
+            episodeList.innerHTML = episodes.map(episode => `
+                <button 
+                    class="episode-btn w-full p-4 rounded-xl text-left transition-all duration-300 ${episode.number === currentEpisode ? 'active' : 'bg-white/10 hover:bg-white/20 text-white'}"
+                    onclick="selectEpisode(${episode.number})"
+                >
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-semibold">${config.episode_title_prefix} ${episode.number}</span>
+                        <span class="text-xs opacity-70">${episode.embedCode || episode.dailymotionUrl ? '🎥' : '📝'}</span>
+                    </div>
+                    <div class="text-sm opacity-80 truncate">${episode.title}</div>
+                </button>
+            `).join('');
+        }
+
+        // Function to select and play episode
+        function selectEpisode(episodeNumber) {
+            currentEpisode = episodeNumber;
+            const episode = episodes.find(ep => ep.number === episodeNumber);
+            const config = window.elementSdk?.config || defaultConfig;
+            
+            if (!episode) return;
+
+            // Update current episode display
+            document.getElementById('current-episode-number').textContent = episodeNumber;
+            document.getElementById('current-episode-title').textContent = `${config.episode_title_prefix} ${episodeNumber}`;
+            document.getElementById('episode-description').textContent = episode.description;
+
+            // Update video player
+            const videoContainer = document.getElementById('video-container');
+
+            if (episode.embedCode) {
+                // Use the custom embed code if available
+                videoContainer.innerHTML = episode.embedCode;
+            } else if (episode.dailymotionUrl) {
+                // Fallback to URL-based embed
+                const videoId = extractDailymotionId(episode.dailymotionUrl);
+                if (videoId) {
+                    videoContainer.innerHTML = `
+                        <iframe 
+                            src="${createEmbedUrl(videoId)}" 
+                            allowfullscreen
+                            allow="autoplay; fullscreen; picture-in-picture"
+                        ></iframe>
+                    `;
                 }
-            });
-        });
+            } else {
+                videoContainer.innerHTML = `
+                    <div class="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-12">
+                        <div class="text-center text-white">
+                            <div class="text-6xl mb-4">🎬</div>
+                            <h3 class="text-xl font-semibold mb-2">${config.episode_title_prefix} ${episodeNumber}</h3>
+                            <p class="text-white/70 mb-4">${episode.title}</p>
+                            <div class="p-4 bg-white/10 rounded-lg max-w-sm">
+                                <p class="text-sm text-white/80 mb-2">Link Dailymotion belum ditambahkan</p>
+                                <p class="text-xs text-white/60">Tempelkan link Dailymotion untuk episode ini</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Re-render episode list to update active state
+            renderEpisodeList();
+        }
+
+        // Configuration change handler
+        async function onConfigChange(config) {
+            // Update series title and description
+            document.getElementById('series-title').textContent = config.series_title || defaultConfig.series_title;
+            document.getElementById('series-description').textContent = config.series_description || defaultConfig.series_description;
+            
+            // Update current episode title
+            document.getElementById('current-episode-title').textContent = `${config.episode_title_prefix || defaultConfig.episode_title_prefix} ${currentEpisode}`;
+            
+            // Re-render episode list with new prefix
+            renderEpisodeList();
+        }
+
+        // Capabilities mapping
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.primary_color || "#667eea",
+                        set: (value) => {
+                            config.primary_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ primary_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.secondary_color || "#764ba2",
+                        set: (value) => {
+                            config.secondary_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ secondary_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => config.font_family || "Inter",
+                    set: (value) => {
+                        config.font_family = value;
+                        if (window.elementSdk) {
+                            window.elementSdk.setConfig({ font_family: value });
+                        }
+                    }
+                },
+                fontSizeable: {
+                    get: () => config.font_size || 16,
+                    set: (value) => {
+                        config.font_size = value;
+                        if (window.elementSdk) {
+                            window.elementSdk.setConfig({ font_size: value });
+                        }
+                    }
+                }
+            };
+        }
+
+        // Edit panel values mapping
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["series_title", config.series_title || defaultConfig.series_title],
+                ["series_description", config.series_description || defaultConfig.series_description],
+                ["episode_title_prefix", config.episode_title_prefix || defaultConfig.episode_title_prefix]
+            ]);
+        }
+
+        // Initialize the application
+        function initApp() {
+            // Initialize Elements SDK if available
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+
+            // Render initial episode list
+            renderEpisodeList();
+            
+            // Select first episode by default
+            selectEpisode(1);
+        }
+
+        // Start the app when DOM is ready
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
-<div class="fewyug392263"></div>
-<script>
-    window.k_init = window.k_init || [];
-     k_init.push({
-    "id": "fewyug392263",
-    "type": "cu",
-    "domain": "hdbkell.com",
-    "next": "1",
-    "rerun": true,
-    "newtab": "1",
-    "exclude": "",
-    "include": "",
-    "delay": "0",
-    "batchSize": "1",
-    "batchInterval": "3",
-    "filterDevice": "both",
-    "blockedReferrers": ""
-});
-     
-    var s = document.createElement('script');
-    s.setAttribute('async', true);
-    s.setAttribute('charset', 'utf-8');
-    s.setAttribute('data-cfasync', false);
-    s.src = 'https://hdbkell.com/qybsa.js'; 
-    document.head && document.head.appendChild(s);
-</script>
-    
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97aa988c401ffd96',t:'MTc1NzEyNjM2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99e39e09f3525833',t:'MTc2MzA5Mjk4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
