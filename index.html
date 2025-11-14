@@ -71,7 +71,11 @@
       <div class="glass-effect rounded-2xl p-6 mb-6">
        <div class="flex items-center justify-between mb-4">
         <h2 id="current-episode-title" class="text-2xl font-bold text-white">Episode 1</h2>
-        <div class="flex items-center space-x-2"><span class="text-white/60 text-sm">Episode</span> <span id="current-episode-number" class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold">1</span>
+        <div class="flex items-center space-x-3"><button id="fullscreen-btn" onclick="toggleFullscreen()" class="hidden bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg transition-all duration-300 group">
+          <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewbox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+          </svg></button>
+         <div class="flex items-center space-x-2"><span class="text-white/60 text-sm">Episode</span> <span id="current-episode-number" class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold">1</span>
+         </div>
         </div>
        </div>
        <div id="video-container" class="video-container">
@@ -224,6 +228,56 @@
             `).join('');
         }
 
+        // Function to toggle fullscreen
+        function toggleFullscreen() {
+            const videoContainer = document.getElementById('video-container');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                } else if (videoContainer.webkitRequestFullscreen) {
+                    videoContainer.webkitRequestFullscreen();
+                } else if (videoContainer.msRequestFullscreen) {
+                    videoContainer.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Listen for fullscreen changes to update button icon
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        document.addEventListener('msfullscreenchange', updateFullscreenButton);
+
+        function updateFullscreenButton() {
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+            
+            if (isFullscreen) {
+                fullscreenBtn.innerHTML = `
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                    </svg>
+                `;
+            } else {
+                fullscreenBtn.innerHTML = `
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                    </svg>
+                `;
+            }
+        }
+
         // Function to select and play episode
         function selectEpisode(episodeNumber) {
             currentEpisode = episodeNumber;
@@ -239,10 +293,12 @@
 
             // Update video player
             const videoContainer = document.getElementById('video-container');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
 
             if (episode.embedCode) {
                 // Use the custom embed code if available
                 videoContainer.innerHTML = episode.embedCode;
+                fullscreenBtn.classList.remove('hidden');
             } else if (episode.dailymotionUrl) {
                 // Fallback to URL-based embed
                 const videoId = extractDailymotionId(episode.dailymotionUrl);
@@ -254,6 +310,7 @@
                             allow="autoplay; fullscreen; picture-in-picture"
                         ></iframe>
                     `;
+                    fullscreenBtn.classList.remove('hidden');
                 }
             } else {
                 videoContainer.innerHTML = `
@@ -269,6 +326,7 @@
                         </div>
                     </div>
                 `;
+                fullscreenBtn.classList.add('hidden');
             }
 
             // Re-render episode list to update active state
@@ -364,5 +422,5 @@
         // Start the app when DOM is ready
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99e39e09f3525833',t:'MTc2MzA5Mjk4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99e3b138a37790f2',t:'MTc2MzA5Mzc3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
