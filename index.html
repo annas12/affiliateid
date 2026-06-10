@@ -281,5 +281,189 @@
       </section>
     </div>
   </main>
+  <!-- FAQ / Pertanyaan Umum -->
+<section class="faq-slim-section">
+  <div class="faq-slim-wrap">
+
+    <div class="faq-slim-head">
+      <span class="faq-kicker">Pertanyaan Umum</span>
+      <h2>Hal yang sering ditanyakan banyak orang</h2>
+      <p>
+        Sebelum membeli, biasanya orang ingin tahu apa penyebabnya, gejalanya,
+        bahayanya, dan cara mengelolanya.
+      </p>
+    </div>
+
+    <div class="faq-slim-list">
+
+      <div class="faq-slim-item">
+        <div class="faq-icon">❓</div>
+        <div class="faq-text">
+          Asam lambung kronis disebabkan karena apa?
+        </div>
+      </div>
+
+      <div class="faq-slim-item">
+        <div class="faq-icon">🩺</div>
+        <div class="faq-text">
+          Apa saja yang dirasakan penderita asam lambung?
+        </div>
+      </div>
+
+      <div class="faq-slim-item">
+        <div class="faq-icon">⚠️</div>
+        <div class="faq-text">
+          Apakah asam lambung kronis berbahaya?
+        </div>
+      </div>
+
+      <div class="faq-slim-item">
+        <div class="faq-icon">🌱</div>
+        <div class="faq-text">
+          Apakah keluhan asam lambung bisa membaik?
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-slim-section {
+    width: 100%;
+    padding: 54px 14px;
+    background: transparent;
+  }
+
+  .faq-slim-wrap {
+    width: min(100%, 1060px);
+    margin: 0 auto;
+  }
+
+  .faq-slim-head {
+    max-width: 760px;
+    margin: 0 auto 28px;
+    text-align: center;
+  }
+
+  .faq-kicker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(0, 121, 50, 0.16);
+    color: #075c22;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .faq-slim-head h2 {
+    margin: 14px 0 10px;
+    color: #075c22;
+    font-size: clamp(28px, 3.6vw, 48px);
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -1px;
+  }
+
+  .faq-slim-head p {
+    margin: 0;
+    color: rgba(17, 17, 17, 0.68);
+    font-size: clamp(15px, 1.5vw, 17px);
+    line-height: 1.65;
+    font-weight: 500;
+  }
+
+  .faq-slim-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .faq-slim-item {
+    min-height: 82px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 121, 50, 0.10);
+    box-shadow: 0 12px 28px rgba(0, 72, 25, 0.10);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-slim-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(0, 72, 25, 0.15);
+  }
+
+  .faq-icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: #eaffea;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .faq-text {
+    color: #111111;
+    font-size: 15px;
+    line-height: 1.35;
+    font-weight: 900;
+    text-align: left;
+  }
+
+  @media (max-width: 900px) {
+    .faq-slim-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .faq-slim-section {
+      padding: 38px 10px;
+    }
+
+    .faq-slim-head {
+      margin-bottom: 20px;
+    }
+
+    .faq-slim-head h2 {
+      font-size: clamp(25px, 7vw, 34px);
+    }
+
+    .faq-slim-list {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .faq-slim-item {
+      min-height: auto;
+      padding: 13px 14px;
+      border-radius: 15px;
+    }
+
+    .faq-icon {
+      flex-basis: 34px;
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      font-size: 18px;
+    }
+
+    .faq-text {
+      font-size: 14px;
+    }
+  }
+</style>
 </body>
 </html>
