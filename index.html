@@ -1,426 +1,285 @@
-<!doctype html>
-<html lang="id" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Series Streaming Player</title>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asam Lambung Naik</title>
+
   <style>
-        body {
-            box-sizing: border-box;
-        }
-        
-        .episode-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .episode-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .episode-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-    </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="h-full gradient-bg">
-  <div class="min-h-full p-4">
-   <div class="max-w-6xl mx-auto"><!-- Header -->
-    <div class="text-center mb-8">
-     <h1 id="series-title" class="text-4xl font-bold text-white mb-4">My Favorite Series</h1>
-     <p id="series-description" class="text-lg text-white/80 max-w-2xl mx-auto">Nikmati series favorit Anda dengan kualitas terbaik. Pilih episode yang ingin ditonton dari daftar di bawah.</p>
-    </div><!-- Main Content -->
-    <div class="grid lg:grid-cols-4 gap-6"><!-- Video Player -->
-     <div class="lg:col-span-3">
-      <div class="glass-effect rounded-2xl p-6 mb-6">
-       <div class="flex items-center justify-between mb-4">
-        <h2 id="current-episode-title" class="text-2xl font-bold text-white">Episode 1</h2>
-        <div class="flex items-center space-x-3"><button id="fullscreen-btn" onclick="toggleFullscreen()" class="hidden bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg transition-all duration-300 group">
-          <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewbox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-          </svg></button>
-         <div class="flex items-center space-x-2"><span class="text-white/60 text-sm">Episode</span> <span id="current-episode-number" class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold">1</span>
-         </div>
-        </div>
-       </div>
-       <div id="video-container" class="video-container">
-        <div class="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-12">
-         <div class="text-center text-white">
-          <div class="text-6xl mb-4">
-           🎬
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Siap untuk Menonton</h3>
-          <p class="text-white/70">Tempelkan link Dailymotion Anda untuk episode ini</p>
-          <div class="mt-4 p-4 bg-white/10 rounded-lg">
-           <p class="text-sm text-white/80">Format link yang didukung:</p>
-           <p class="text-xs text-white/60 mt-1">https://www.dailymotion.com/video/xxxxxx</p>
-          </div>
-         </div>
-        </div>
-       </div>
-      </div><!-- Episode Info -->
-      <div class="glass-effect rounded-xl p-4">
-       <h3 class="text-lg font-semibold text-white mb-2">Tentang Episode Ini</h3>
-       <p id="episode-description" class="text-white/70 text-sm">Episode pertama dari series yang menarik ini. Klik episode lain untuk melanjutkan menonton.</p>
-      </div>
-     </div><!-- Episode List -->
-     <div class="lg:col-span-1">
-      <div class="glass-effect rounded-2xl p-6">
-       <h3 class="text-xl font-bold text-white mb-6 text-center">Daftar Episode</h3>
-       <div id="episode-list" class="space-y-3"><!-- Episodes will be generated here -->
-       </div>
-      </div>
-     </div>
+    :root{
+      --green-1:#44d44f;
+      --green-2:#35c84a;
+      --green-3:#27b742;
+      --green-4:#1f9d39;
+      --green-dark:#167b2c;
+
+      --white:#ffffff;
+      --black:#111111;
+      --yellow:#fff22f;
+      --red:#ff2d2d;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html, body{
+      margin:0;
+      padding:0;
+      width:100%;
+      min-height:100%;
+      overflow-x:hidden;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:
+        radial-gradient(circle at center,
+          rgba(255,255,255,0.72) 0%,
+          rgba(255,255,255,0.52) 14%,
+          rgba(233,255,232,0.34) 28%,
+          rgba(148,241,142,0.20) 42%,
+          rgba(68,212,79,0.08) 58%,
+          rgba(68,212,79,0.00) 68%
+        ),
+        radial-gradient(circle at center,
+          #72e165 0%,
+          #56d95a 18%,
+          #44d44f 38%,
+          #30c249 62%,
+          #23b240 82%,
+          #1c9f39 100%
+        );
+      position:relative;
+    }
+
+    body::before,
+    body::after{
+      content:"";
+      position:fixed;
+      pointer-events:none;
+      z-index:0;
+      border-radius:50%;
+      filter:blur(8px);
+      opacity:.42;
+    }
+
+    body::before{
+      width:220px;
+      height:220px;
+      top:80px;
+      left:-60px;
+      background:radial-gradient(circle, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.08) 42%, transparent 75%);
+    }
+
+    body::after{
+      width:260px;
+      height:260px;
+      right:-70px;
+      bottom:110px;
+      background:radial-gradient(circle, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.06) 40%, transparent 75%);
+    }
+
+    .page{
+      position:relative;
+      z-index:1;
+      width:100%;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:26px 12px 34px;
+    }
+
+    .container{
+      width:100%;
+      max-width:980px;
+      text-align:center;
+    }
+
+    .headline{
+      max-width:940px;
+      margin:0 auto 8px;
+    }
+
+    .headline h1{
+      margin:0;
+      text-transform:uppercase;
+      line-height:1.02;
+      letter-spacing:-1.2px;
+      font-weight:900;
+    }
+
+    .headline .line-top{
+      display:block;
+      font-size:clamp(28px, 4.2vw, 58px);
+      color:var(--white);
+      text-shadow:
+        -2px -2px 0 var(--green-dark),
+         2px -2px 0 var(--green-dark),
+        -2px  2px 0 var(--green-dark),
+         2px  2px 0 var(--green-dark),
+         0 5px 0 rgba(10,92,24,0.28),
+         0 12px 24px rgba(0,0,0,0.10);
+    }
+
+    .headline .line-main{
+      display:block;
+      margin-top:4px;
+      font-size:clamp(34px, 5.3vw, 76px);
+      color:var(--yellow);
+      text-shadow:
+        -2px -2px 0 var(--green-dark),
+         2px -2px 0 var(--green-dark),
+        -2px  2px 0 var(--green-dark),
+         2px  2px 0 var(--green-dark),
+        -3px  0px 0 var(--green-dark),
+         3px  0px 0 var(--green-dark),
+         0px -3px 0 var(--green-dark),
+         0px  3px 0 var(--green-dark),
+         0 6px 0 rgba(10,92,24,0.28),
+         0 14px 26px rgba(0,0,0,0.12);
+    }
+
+    .headline h2{
+      margin:12px 0 0;
+      font-size:clamp(20px, 2.3vw, 34px);
+      line-height:1.12;
+      font-weight:900;
+      letter-spacing:-0.5px;
+      color:var(--white);
+      text-shadow:
+        -1px -1px 0 rgba(14,104,29,0.65),
+         1px -1px 0 rgba(14,104,29,0.65),
+        -1px  1px 0 rgba(14,104,29,0.65),
+         1px  1px 0 rgba(14,104,29,0.65),
+         0 8px 18px rgba(0,0,0,0.08);
+    }
+
+    .visual{
+      width:100%;
+      max-width:760px;
+      margin:6px auto 8px;
+      position:relative;
+    }
+
+    .visual::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%, -50%);
+      width:82%;
+      height:82%;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.08) 38%, transparent 72%);
+      filter:blur(18px);
+      z-index:-1;
+    }
+
+    .visual img{
+      display:block;
+      width:100%;
+      height:auto;
+      margin:0 auto;
+      filter:drop-shadow(0 14px 28px rgba(0,0,0,0.12));
+    }
+
+    .note{
+      max-width:920px;
+      margin:10px auto 0;
+      padding:0 6px;
+    }
+
+    .note p{
+      margin:0;
+      font-size:clamp(18px, 1.8vw, 28px);
+      line-height:1.34;
+      font-weight:900;
+      letter-spacing:-0.3px;
+      color:var(--white);
+      text-shadow:
+        -1px -1px 0 rgba(14,104,29,0.52),
+         1px -1px 0 rgba(14,104,29,0.52),
+        -1px  1px 0 rgba(14,104,29,0.52),
+         1px  1px 0 rgba(14,104,29,0.52),
+         0 8px 18px rgba(0,0,0,0.08);
+    }
+
+    .note .highlight{
+      color:var(--yellow);
+      text-shadow:
+        -1px -1px 0 var(--green-dark),
+         1px -1px 0 var(--green-dark),
+        -1px  1px 0 var(--green-dark),
+         1px  1px 0 var(--green-dark);
+    }
+
+    @media (max-width: 768px){
+      .page{
+        padding:18px 10px 24px;
+      }
+
+      .headline{
+        margin-bottom:6px;
+      }
+
+      .headline .line-top{
+        font-size:clamp(24px, 7vw, 40px);
+        line-height:1.04;
+      }
+
+      .headline .line-main{
+        margin-top:3px;
+        font-size:clamp(29px, 8.5vw, 50px);
+        line-height:1.02;
+      }
+
+      .headline h2{
+        margin-top:10px;
+        font-size:clamp(17px, 5vw, 23px);
+        line-height:1.14;
+      }
+
+      .visual{
+        max-width:100%;
+        margin:6px auto 8px;
+      }
+
+      .note{
+        margin-top:8px;
+        padding:0 2px;
+      }
+
+      .note p{
+        font-size:clamp(15px, 4.5vw, 19px);
+        line-height:1.35;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="container">
+      <section class="headline">
+        <h1>
+          <span class="line-top">JANGAN SEPELEKAN</span>
+          <span class="line-main">ASAM LAMBUNG NAIK</span>
+        </h1>
+        <h2>Atasi Sekarang Sebelum Kronis!</h2>
+      </section>
+
+      <section class="visual">
+        <img src="./gambar2.png" alt="">
+      </section>
+
+      <section class="note">
+        <p>
+          “Luangkan Waktu Selama 2-3 Menit Untuk Membaca Website Ini<br>
+          Agar <span class="highlight">Asam Lambung Naik</span> Dapat Teratasi”
+        </p>
+      </section>
     </div>
-   </div>
-  </div>
-  <script>
-        // Default configuration
-        const defaultConfig = {
-            series_title: "My Favorite Series",
-            series_description: "Nikmati series favorit Anda dengan kualitas terbaik. Pilih episode yang ingin ditonton dari daftar di bawah.",
-            episode_title_prefix: "Episode"
-        };
-
-        // Episode data - you can replace these URLs with your Dailymotion links
-        const episodes = [
-            {
-                number: 1,
-                title: "Pilot Episode",
-                description: "Episode pertama dari series yang menarik ini. Perkenalan karakter utama dan setting cerita.",
-                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4o6",
-                embedCode: `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://geo.dailymotion.com/player.html?video=x9aq4o6"style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none;"allowfullscreentitle="Dailymotion Video Player"allow="web-share"></iframe></div>`
-            },
-            {
-                number: 2,
-                title: "The Beginning",
-                description: "Petualangan dimulai dengan konflik pertama yang mengubah segalanya.",
-                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4oa",
-                embedCode: `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://geo.dailymotion.com/player.html?video=x9aq4oa"style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none;"allowfullscreentitle="Dailymotion Video Player"allow="web-share"></iframe></div>`
-            },
-            {
-                number: 3,
-                title: "Rising Action",
-                description: "Ketegangan meningkat dan karakter menghadapi tantangan baru.",
-                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4o0"
-            },
-            {
-                number: 4,
-                title: "Plot Twist",
-                description: "Kejutan besar yang mengubah arah cerita secara dramatis.",
-                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4nu"
-            },
-            {
-                number: 5,
-                title: "Complications",
-                description: "Masalah bertambah kompleks dan hubungan antar karakter diuji.",
-                dailymotionUrl: "https://www.dailymotion.com/video/x9aq4nw"
-            },
-            {
-                number: 6,
-                title: "Mid Season",
-                description: "Titik tengah season dengan revelasi penting tentang masa lalu.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            },
-            {
-                number: 7,
-                title: "Revelations",
-                description: "Rahasia besar terbongkar dan mengubah dinamika cerita.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            },
-            {
-                number: 8,
-                title: "Confrontation",
-                description: "Konfrontasi besar antara karakter utama dan antagonis.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            },
-            {
-                number: 9,
-                title: "The Climax",
-                description: "Puncak ketegangan dengan aksi dan drama yang intens.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            },
-            {
-                number: 10,
-                title: "Resolution",
-                description: "Mulai ada penyelesaian konflik utama dalam cerita.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            },
-            {
-                number: 11,
-                title: "Preparation",
-                description: "Persiapan untuk episode final dengan setup yang menegangkan.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            },
-            {
-                number: 12,
-                title: "Season Finale",
-                description: "Episode penutup season dengan ending yang memuaskan dan mengejutkan.",
-                dailymotionUrl: "" // Paste your Dailymotion link here
-            }
-        ];
-
-        let currentEpisode = 1;
-
-        // Function to extract Dailymotion video ID from URL
-        function extractDailymotionId(url) {
-            if (!url) return null;
-            const match = url.match(/dailymotion\.com\/video\/([a-zA-Z0-9]+)/);
-            return match ? match[1] : null;
-        }
-
-        // Function to create Dailymotion embed URL
-        function createEmbedUrl(videoId) {
-            return `https://www.dailymotion.com/embed/video/${videoId}?autoplay=0`;
-        }
-
-        // Function to render episode list
-        function renderEpisodeList() {
-            const episodeList = document.getElementById('episode-list');
-            const config = window.elementSdk?.config || defaultConfig;
-            
-            episodeList.innerHTML = episodes.map(episode => `
-                <button 
-                    class="episode-btn w-full p-4 rounded-xl text-left transition-all duration-300 ${episode.number === currentEpisode ? 'active' : 'bg-white/10 hover:bg-white/20 text-white'}"
-                    onclick="selectEpisode(${episode.number})"
-                >
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="font-semibold">${config.episode_title_prefix} ${episode.number}</span>
-                        <span class="text-xs opacity-70">${episode.embedCode || episode.dailymotionUrl ? '🎥' : '📝'}</span>
-                    </div>
-                    <div class="text-sm opacity-80 truncate">${episode.title}</div>
-                </button>
-            `).join('');
-        }
-
-        // Function to toggle fullscreen
-        function toggleFullscreen() {
-            const videoContainer = document.getElementById('video-container');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            
-            if (!document.fullscreenElement) {
-                // Enter fullscreen
-                if (videoContainer.requestFullscreen) {
-                    videoContainer.requestFullscreen();
-                } else if (videoContainer.webkitRequestFullscreen) {
-                    videoContainer.webkitRequestFullscreen();
-                } else if (videoContainer.msRequestFullscreen) {
-                    videoContainer.msRequestFullscreen();
-                }
-            } else {
-                // Exit fullscreen
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            }
-        }
-
-        // Listen for fullscreen changes to update button icon
-        document.addEventListener('fullscreenchange', updateFullscreenButton);
-        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-        document.addEventListener('msfullscreenchange', updateFullscreenButton);
-
-        function updateFullscreenButton() {
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-            
-            if (isFullscreen) {
-                fullscreenBtn.innerHTML = `
-                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                    </svg>
-                `;
-            } else {
-                fullscreenBtn.innerHTML = `
-                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                    </svg>
-                `;
-            }
-        }
-
-        // Function to select and play episode
-        function selectEpisode(episodeNumber) {
-            currentEpisode = episodeNumber;
-            const episode = episodes.find(ep => ep.number === episodeNumber);
-            const config = window.elementSdk?.config || defaultConfig;
-            
-            if (!episode) return;
-
-            // Update current episode display
-            document.getElementById('current-episode-number').textContent = episodeNumber;
-            document.getElementById('current-episode-title').textContent = `${config.episode_title_prefix} ${episodeNumber}`;
-            document.getElementById('episode-description').textContent = episode.description;
-
-            // Update video player
-            const videoContainer = document.getElementById('video-container');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-
-            if (episode.embedCode) {
-                // Use the custom embed code if available
-                videoContainer.innerHTML = episode.embedCode;
-                fullscreenBtn.classList.remove('hidden');
-            } else if (episode.dailymotionUrl) {
-                // Fallback to URL-based embed
-                const videoId = extractDailymotionId(episode.dailymotionUrl);
-                if (videoId) {
-                    videoContainer.innerHTML = `
-                        <iframe 
-                            src="${createEmbedUrl(videoId)}" 
-                            allowfullscreen
-                            allow="autoplay; fullscreen; picture-in-picture"
-                        ></iframe>
-                    `;
-                    fullscreenBtn.classList.remove('hidden');
-                }
-            } else {
-                videoContainer.innerHTML = `
-                    <div class="absolute inset-0 flex items-center justify-center bg-gray-900 rounded-12">
-                        <div class="text-center text-white">
-                            <div class="text-6xl mb-4">🎬</div>
-                            <h3 class="text-xl font-semibold mb-2">${config.episode_title_prefix} ${episodeNumber}</h3>
-                            <p class="text-white/70 mb-4">${episode.title}</p>
-                            <div class="p-4 bg-white/10 rounded-lg max-w-sm">
-                                <p class="text-sm text-white/80 mb-2">Link Dailymotion belum ditambahkan</p>
-                                <p class="text-xs text-white/60">Tempelkan link Dailymotion untuk episode ini</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                fullscreenBtn.classList.add('hidden');
-            }
-
-            // Re-render episode list to update active state
-            renderEpisodeList();
-        }
-
-        // Configuration change handler
-        async function onConfigChange(config) {
-            // Update series title and description
-            document.getElementById('series-title').textContent = config.series_title || defaultConfig.series_title;
-            document.getElementById('series-description').textContent = config.series_description || defaultConfig.series_description;
-            
-            // Update current episode title
-            document.getElementById('current-episode-title').textContent = `${config.episode_title_prefix || defaultConfig.episode_title_prefix} ${currentEpisode}`;
-            
-            // Re-render episode list with new prefix
-            renderEpisodeList();
-        }
-
-        // Capabilities mapping
-        function mapToCapabilities(config) {
-            return {
-                recolorables: [
-                    {
-                        get: () => config.primary_color || "#667eea",
-                        set: (value) => {
-                            config.primary_color = value;
-                            if (window.elementSdk) {
-                                window.elementSdk.setConfig({ primary_color: value });
-                            }
-                        }
-                    },
-                    {
-                        get: () => config.secondary_color || "#764ba2",
-                        set: (value) => {
-                            config.secondary_color = value;
-                            if (window.elementSdk) {
-                                window.elementSdk.setConfig({ secondary_color: value });
-                            }
-                        }
-                    }
-                ],
-                borderables: [],
-                fontEditable: {
-                    get: () => config.font_family || "Inter",
-                    set: (value) => {
-                        config.font_family = value;
-                        if (window.elementSdk) {
-                            window.elementSdk.setConfig({ font_family: value });
-                        }
-                    }
-                },
-                fontSizeable: {
-                    get: () => config.font_size || 16,
-                    set: (value) => {
-                        config.font_size = value;
-                        if (window.elementSdk) {
-                            window.elementSdk.setConfig({ font_size: value });
-                        }
-                    }
-                }
-            };
-        }
-
-        // Edit panel values mapping
-        function mapToEditPanelValues(config) {
-            return new Map([
-                ["series_title", config.series_title || defaultConfig.series_title],
-                ["series_description", config.series_description || defaultConfig.series_description],
-                ["episode_title_prefix", config.episode_title_prefix || defaultConfig.episode_title_prefix]
-            ]);
-        }
-
-        // Initialize the application
-        function initApp() {
-            // Initialize Elements SDK if available
-            if (window.elementSdk) {
-                window.elementSdk.init({
-                    defaultConfig,
-                    onConfigChange,
-                    mapToCapabilities,
-                    mapToEditPanelValues
-                });
-            }
-
-            // Render initial episode list
-            renderEpisodeList();
-            
-            // Select first episode by default
-            selectEpisode(1);
-        }
-
-        // Start the app when DOM is ready
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99e3b138a37790f2',t:'MTc2MzA5Mzc3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  </main>
+</body>
 </html>
